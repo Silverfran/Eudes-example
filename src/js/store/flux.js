@@ -12,7 +12,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			people: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -22,7 +23,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 			loadSomeData: () => {
 				/**
 					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+                */
+				const store = getStore();
+
+				var requestOptions = {
+					method: "GET",
+					redirect: "follow"
+				};
+
+				fetch("https://swapi.dev/api/people/", requestOptions)
+					.then(response => response.json())
+					.then(result => {
+						setStore({ people: result });
+						store.people.results.forEach(element => {
+							console.log(element.name);
+						});
+					})
+					.catch(error => console.log("error", error));
 			},
 			changeColor: (index, color) => {
 				//get the store
